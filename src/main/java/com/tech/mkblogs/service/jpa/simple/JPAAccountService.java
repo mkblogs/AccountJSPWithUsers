@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.persistence.NoResultException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.tech.mkblogs.dto.AccountDTO;
 import com.tech.mkblogs.filter.FilterDTO;
@@ -18,7 +18,7 @@ import com.tech.mkblogs.service.useraudit.UserAuditService;
 
 import lombok.extern.log4j.Log4j2;
 
-@Repository
+@Service
 @Log4j2
 public class JPAAccountService implements AccountService{
 
