@@ -74,4 +74,18 @@ INSERT INTO settings (login_id,connection_type,primary_key_generation_type,authe
 INSERT INTO settings (login_id,connection_type,primary_key_generation_type,authentication_type,authentication_encrypted)
   SELECT id ,'PLAIN_JDBC','AUTO','DB',0 FROM user WHERE login_name='dbadmin';
 
+
+CREATE TABLE series (
+    id bigint NOT NULL AUTO_INCREMENT,
+    table_name VARCHAR(500) DEFAULT NULL,
+    current_value bigint NOT NULL,   
+    created_by bigint DEFAULT NULL,
+    created_name VARCHAR(500) DEFAULT NULL,
+    created_ts datetime DEFAULT NULL,
+    last_modified_by bigint DEFAULT NULL,
+    last_modified_name VARCHAR(500) DEFAULT NULL,
+    last_modified_ts datetime DEFAULT NULL,
+    `version` INT(11) DEFAULT '0',
+    PRIMARY KEY (id)
+);
  

@@ -59,7 +59,6 @@ public class PasswordsEqualConstraintValidator implements ConstraintValidator<Va
 		log.info("| Request Time - Start - isValid() " + LocalTime.now());
 		boolean valid = true;
         try{
-        	System.out.println(value);
         	if(value instanceof UserDTO) {
         		UserDTO userDTO = (UserDTO) value;
         		return isValidForRegistration(userDTO);

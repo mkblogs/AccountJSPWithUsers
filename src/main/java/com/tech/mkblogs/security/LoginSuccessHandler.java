@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tech.mkblogs.mapper.UserMapper;
+import com.tech.mkblogs.pk.PrimarykeyService;
 import com.tech.mkblogs.security.db.AccountUserRepository;
 import com.tech.mkblogs.security.db.dto.UserSessionDTO;
 import com.tech.mkblogs.security.db.model.User;
@@ -31,6 +32,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 	
 	@Autowired
 	SessionOperations sessionOperations; 
+	
+	@Autowired
+	PrimarykeyService pkService;
 	
 	@Override
 	@Transactional
@@ -58,6 +62,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
         		UserSessionDTO userDTO = new UserSessionDTO();
         		userDTO = UserMapper.INSTANCE.toSessionUserDTO(loginUser);
         		sessionOperations.storeSession(userDTO);
+        		
+        		pkService.processPK(userDTO.getPrimaryKeyGenerationType());
+        		
+        		
             }else {
             	UserSessionDTO userDTO = new UserSessionDTO();
         		userDTO.setConnectionType("PLAIN_JDBC");

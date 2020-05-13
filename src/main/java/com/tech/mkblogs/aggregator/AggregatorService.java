@@ -2,14 +2,13 @@ package com.tech.mkblogs.aggregator;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.tech.mkblogs.dto.AccountDTO;
 import com.tech.mkblogs.filter.FilterDTO;
+import com.tech.mkblogs.pk.PrimarykeyService;
 import com.tech.mkblogs.security.db.dto.UserSessionDTO;
 import com.tech.mkblogs.service.AccountService;
 import com.tech.mkblogs.service.hibernate.entitymanager.EntityManagerAccountService;
@@ -33,12 +32,9 @@ public class AggregatorService {
 	@Autowired
 	SessionOperations sessionOperations;
 	
-	 @PostConstruct
-	  public void init(){
-		 //String connectionType ="db"; //userInfo.getConnectionType();
-		// getServiceObjct(connectionType);
-	  }
-	 
+	@Autowired
+	PrimarykeyService primarykeyService;
+	
 	 /**
 	  * 
 	  * @param connectionType
@@ -117,7 +113,14 @@ public class AggregatorService {
 		 UserSessionDTO userInfo = sessionOperations.fetchSession();
 		 String connectionType = userInfo.getConnectionType();
 		 getServiceObjct(connectionType);
-		 return accountService.saveAccount(accountDTO);
+		 String primaryKeyGenerationType = userInfo.getPrimaryKeyGenerationType();
+		 Integer nextValue = primarykeyService.getNextSequence(primaryKeyGenerationType);
+		 if(nextValue != null)
+			 accountDTO.setAccountId(nextValue);
+		 
+		 AccountDTO dto = accountService.saveAccount(accountDTO);
+		 primarykeyService.updatePK(dto.getAccountId());
+		 return dto;
 	 }
 	
 	 public AccountDTO updateAccount(AccountDTO accountDTO) {
